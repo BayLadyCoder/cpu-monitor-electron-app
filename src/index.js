@@ -27,6 +27,7 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 
   os.cpuUsage((value) => {
+    // this is logging on terminal (main process)
     console.log('CPU Usage (%): ' + value * 100);
     console.log('Mem Usage (%): ' + os.freememPercentage() * 100);
     console.log('Total Mem (GB): ' + os.totalmem() / 1024);
