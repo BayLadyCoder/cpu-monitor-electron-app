@@ -26,17 +26,20 @@ const createWindow = () => {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 
-  os.cpuUsage((value) => {
-    // this is logging on terminal (main process)
-    console.log('CPU Usage (%): ' + value * 100);
-    console.log('Mem Usage (%): ' + os.freememPercentage() * 100);
-    console.log('Total Mem (GB): ' + os.totalmem() / 1024);
+  // Update data every 1 second
+  setInterval(() => {
+    os.cpuUsage((value) => {
+      // this is logging on terminal (main process)
+      // console.log('CPU Usage (%): ' + value * 100);
+      // console.log('Mem Usage (%): ' + os.freememPercentage() * 100);
+      // console.log('Total Mem (GB): ' + os.totalmem() / 1024);
 
-    // use ipcMain to pass data from main process to renderer process (accessible on web)
-    mainWindow.webContents.send('cpu', value * 100);
-    mainWindow.webContents.send('mem', os.freememPercentage() * 100);
-    mainWindow.webContents.send('total-mem', os.totalmem() / 1024);
-  });
+      // use ipcMain to pass data from main process to renderer process (accessible on web)
+      mainWindow.webContents.send('cpu', value * 100);
+      mainWindow.webContents.send('mem', os.freememPercentage() * 100);
+      mainWindow.webContents.send('total-mem', os.totalmem() / 1024);
+    });
+  }, 1000);
 };
 
 // This method will be called when Electron has finished
