@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-
+const os = require('os-utils');
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
 if (require('electron-squirrel-startup')) {
@@ -14,6 +14,9 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      // contextIsolation: false,
+      // enableRemoteModule: true,
     },
   });
 
@@ -22,6 +25,17 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  os.cpuUsage((value) => {
+    console.log('CPU Usage (%): ' + value * 100);
+    console.log('Mem Usage (%): ' + os.freememPercentage() * 100);
+    console.log('Total Mem (GB): ' + os.totalmem() / 1024);
+
+    // use ipcMain to pass data from main process to renderer process (accessible on web)
+    mainWindow.webContents.send('cpu', value * 100);
+    mainWindow.webContents.send('mem', os.freememPercentage() * 100);
+    mainWindow.webContents.send('total-mem', os.totalmem() / 1024);
+  });
 };
 
 // This method will be called when Electron has finished

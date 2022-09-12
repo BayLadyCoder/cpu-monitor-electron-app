@@ -8,5 +8,17 @@
   <body>
     <h1>💖 Hello World!</h1>
     <p>Welcome to your Electron application.</p>
+
+    <script>
+      window.api.receive('cpu', (data) => {
+        console.log('CPU % ' + data);
+      });
+      window.api.receive('cpu', (data) => {
+        console.log('CPU % ' + data);
+      });
+      window.api.receive('total-mem', (data) => {
+        console.log('Total Mem GB ' + data);
+      });
+    </script>
   </body>
 </html>
